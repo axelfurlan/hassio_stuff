@@ -16,6 +16,7 @@ void ESP_NRF24L01_Receiver::setup() {
     radio.begin(ce_pin_->get_pin(), cs_pin_->get_pin());
     radio.setDataRate( RF24_250KBPS );
     radio.setPALevel(RF24_PA_HIGH);
+    radio.setChannel(channel_);
     radio.setAutoAck(true);
     radio.setPayloadSize(sizeof(NrfSensorData));
     for (uint8_t i = 0; i < 6; ++i) {
@@ -27,16 +28,16 @@ void ESP_NRF24L01_Receiver::setup() {
 }
 
 void ESP_NRF24L01_Receiver::loop() {
-    if (radio.available(&pipe)) {              // is there a payload? get the pipe number that recieved it
+    if (radio.available(&pipe_)) {              // is there a payload? get the pipe number that recieved it
         uint8_t bytes = radio.getPayloadSize();  // get the size of the payload
         radio.read(&NrfSensorData, bytes);             // fetch payload from FIFO
         ESP_LOGD(TAG, "Got Temperature=%.1f°C Humidity=%.1f%%", NrfSensorData.temperature, NrfSensorData.humidity);
         
-        if (temperature_sensors_[pipe] != nullptr) {
-            temperature_sensors_[pipe]->publish_state(NrfSensorData.temperature);
+        if (temperature_sensors_[pipe_] != nullptr) {
+            temperature_sensors_[pipe_]->publish_state(NrfSensorData.temperature);
         }
-        if (humidity_sensors_[pipe] != nullptr) {
-            humidity_sensors_[pipe]->publish_state(NrfSensorData.humidity);
+        if (humidity_sensors_[pipe_] != nullptr) {
+            humidity_sensors_[pipe_]->publish_state(NrfSensorData.humidity);
         }
         status_clear_warning();
     }

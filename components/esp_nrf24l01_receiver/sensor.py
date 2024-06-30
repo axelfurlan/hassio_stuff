@@ -24,7 +24,8 @@ CONF_SENSOR3 = "sensor_3"
 CONF_SENSOR4 = "sensor_4"
 CONF_SENSOR5 = "sensor_5"
 CONF_CE_PIN = "ce_pin"
-SENDER_ADDRESS = "sender_address"
+CONF_CHANNEL = "channel"
+CONF_SENDER_ADDRESS = "sender_address"
 
 esp_nrf24l01_receiver_ns = cg.esphome_ns.namespace("esp_nrf24l01_receiver")
 ESP_NRF24L01_Receiver = esp_nrf24l01_receiver_ns.class_("ESP_NRF24L01_Receiver", cg.Component)
@@ -43,7 +44,7 @@ NRF_SENSOR_SCHEMA = cv.Schema(
                     device_class=DEVICE_CLASS_HUMIDITY,
                     state_class=STATE_CLASS_MEASUREMENT,
                 ),
-                cv.Required(SENDER_ADDRESS): cv.string_strict,
+                cv.Required(CONF_SENDER_ADDRESS): cv.string_strict,
             }
         )
 
@@ -53,6 +54,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Required(CONF_CS_PIN): pins.internal_gpio_input_pin_schema,
         cv.Required(CONF_CE_PIN): pins.internal_gpio_input_pin_schema,
         cv.Required(CONF_NAME): cv.string_strict,
+        cv.Required(CONF_CHANNEL): cv.int_,
         cv.Required(CONF_SENSORS): cv.Schema(
             {
                 cv.Optional(CONF_SENSOR0): NRF_SENSOR_SCHEMA,
@@ -75,6 +77,8 @@ async def to_code(config):
     
     ce_pin = await gpio_pin_expression(config[CONF_CE_PIN])
     cg.add(var.set_ce_pin(ce_pin))
+
+    cg.add(var.set_channel(config[CONF_CHANNEL]))
 
     for sensor_number, sensor_name in enumerate(config[CONF_SENSORS]):
         sensor_config = config[CONF_SENSORS][sensor_name]
