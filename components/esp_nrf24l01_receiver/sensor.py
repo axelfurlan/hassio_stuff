@@ -54,7 +54,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Required(CONF_CS_PIN): pins.internal_gpio_input_pin_schema,
         cv.Required(CONF_CE_PIN): pins.internal_gpio_input_pin_schema,
         cv.Required(CONF_NAME): cv.string_strict,
-        cv.Required(CONF_CHANNEL): cv.int_,
+        cv.Required(CONF_CHANNEL): cv.int_range(0, 125),
         cv.Required(CONF_SENSORS): cv.Schema(
             {
                 cv.Optional(CONF_SENSOR0): NRF_SENSOR_SCHEMA,
