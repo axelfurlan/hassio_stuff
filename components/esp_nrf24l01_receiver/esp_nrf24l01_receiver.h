@@ -25,7 +25,7 @@ public:
     void set_temperature_sensor(sensor::Sensor *temperature_sensor, unsigned int sensor_number) { temperature_sensors_[sensor_number] = temperature_sensor; }
     void set_humidity_sensor(sensor::Sensor *humidity_sensor, unsigned int sensor_number) { humidity_sensors_[sensor_number] = humidity_sensor; }
     void set_sensor_address(char const *address, unsigned int sensor_number) { strcpy(TX_addresses[sensor_number].address, address); TX_addresses[sensor_number].is_set = true; }
-    void set_channel(int channel) { channel_ = (uint_8)channel; }
+    void set_channel(int channel) { channel_ = (uint8_t)channel; }
     
     void setup() override;
     void loop() override;
