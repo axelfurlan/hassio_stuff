@@ -30,11 +30,22 @@ namespace esphome
         cover::CoverTraits Somphy_Shades_Controller::get_traits()
         {
             auto traits = cover::CoverTraits();
-            traits.set_is_assumed_state(false);
-            traits.set_supports_position(true);
+            traits.set_is_assumed_state(true);
+            traits.set_supports_position(false);
             traits.set_supports_tilt(false);
             traits.set_supports_stop(true);
             return traits;
+        }
+
+        float Somphy_Shades_Controller::get_setup_priority() const
+        {
+            return setup_priority::DATA;
+        }
+
+        void Somphy_Shades_Controller::loop()
+        {
+          if (this->current_operation == cover::COVER_OPERATION_IDLE)
+            return;
         }
 
         void Somphy_Shades_Controller::control(const cover::CoverCall &call)
@@ -42,17 +53,25 @@ namespace esphome
             // This will be called every time the user requests a state change.
             if (call.get_position().has_value())
             {
+                SelectDeisredChannel(channel_);
                 float pos = *call.get_position();
-                // Write pos (range 0-1) to cover
-                // ...
-
+                if(pos > 0.95)
+                {
+                    simulatePushbuttonPress(BUTTON_DOWN);
+                }
+                if(pos < 0.05)
+                {
+                    simulatePushbuttonPress(BUTTON_UP);
+                }
                 // Publish new state
                 this->position = pos;
                 this->publish_state();
             }
             if (call.get_stop())
             {
-                // User requested cover stop
+                SelectDeisredChannel(channel_);
+                simulatePushbuttonPress(BUTTON_STOP);
+                this->publish_state();
             }
         }
 
@@ -166,6 +185,5 @@ namespace esphome
             }
             return false;
         }
-
     } // namespace somphy_shades_controller
 } // namespace esphome

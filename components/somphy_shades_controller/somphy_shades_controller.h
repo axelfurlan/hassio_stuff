@@ -17,12 +17,17 @@ namespace esphome
 {
     namespace somphy_shades_controller
     {
-        class Somphy_Shades_Controller : public Component, public cover::Cover
+        class Somphy_Shades_Controller : public cover::Cover, public Component
         {
         public:
             void setup() override;
             void dump_config() override;
+            void loop() override;
+            float get_setup_priority() const override;
             cover::CoverTraits get_traits() override;
+            void set_channel(int channel) { channel_ = (int)channel; }
+
+        protected:
             void control(const cover::CoverCall &call) override;
 
         private:
@@ -38,6 +43,7 @@ namespace esphome
             bool led_2;
             bool led_3;
             bool led_all;
+            int channel_;
         };
     } // namespace somphy_shades_controller
 } // namespace esphome
