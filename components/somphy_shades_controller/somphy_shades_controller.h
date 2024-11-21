@@ -3,7 +3,7 @@
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/component.h"
 #include "esphome/core/hal.h"
-#include <RF24.h>
+#include <ADS1X15.h>
 
 #define BUTTON_CH D1
 #define BUTTON_UP D7
