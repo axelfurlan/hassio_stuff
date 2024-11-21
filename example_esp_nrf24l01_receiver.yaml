@@ -1,0 +1,86 @@
+esphome:
+  name: downstairs-climate-receiver
+  platform: ESP8266
+  board: nodemcuv2
+  libraries:
+    - SPI
+    - nrf24/RF24@1.4.9
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/axelfurlan/hassio_stuff.git
+      ref: master
+    refresh: 0d
+    components: [ esp_nrf24l01_receiver ]
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "MyClimateReceiver"
+    password: "CHOOSE_A_PASSWORD"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "ESPHOME_WILL_GENERATE_A_KEY"
+
+ota:
+  - platform: esphome
+    password: "ESPHOME_WILL_GENERATE_A_PASSWORD"
+
+web_server:
+  port: 80
+
+sensor:
+  - platform: esp_nrf24l01_receiver
+    name: "Downstairs climate receiver"
+    cs_pin: D4
+    ce_pin: D2
+    channel: 76
+    sensors:
+        sensor_0:
+            temperature:
+                name: "Main bathroom temperature"
+            humidity:
+                name: "Main bathroom Humidity"
+            sender_address: "0STUD"
+        sensor_1:
+            temperature:
+                name: "Donwstairs corridor Temperature"
+            humidity:
+                name: "Donwstairs corridor Humidity"
+            sender_address: "1STUD"
+        sensor_2:
+            temperature:
+                name: "Studio Temperature READER TEST"
+            humidity:
+                name: "Studio Humidity READER TEST"
+            sender_address: "2STUD"
+        sensor_3:
+            temperature:
+                name: "Kids bedroom Temperature"
+            humidity:
+                name: "Kids bedroom Humidity"
+            sender_address: "3STUD"
+        sensor_4:
+            temperature:
+                name: "Main bedroom temperature"
+            humidity:
+                name: "Main bedroom humidity"
+            sender_address: "4STUD"
+        sensor_5:
+            temperature:
+                name: "Central heating temperature"
+            humidity:
+                name: "Central heating humidity"
+            sender_address: "5STUD"
+

@@ -1,0 +1,55 @@
+esphome:
+  name: shades-control
+  friendly_name: shades-control
+  platform: ESP8266
+  board: d1_mini
+  libraries: [ Wire, ADS1X15 ]
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/axelfurlan/hassio_stuff.git
+      ref: master
+    refresh: 0d
+    components: [ somphy_shades_controller ]
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "ShadesControl"
+    password: "CHOOSE_A_PASSWORD"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "ESPHOME_WILL_GENERATE_A_KEY"
+
+ota:
+  - platform: esphome
+    password: "ESPHOME_WILL_GENERATE_A_PASSWORD"
+
+cover:
+    - platform: somphy_shades_controller
+      name: Shade 0 control
+      shade_channel: 0
+    - platform: somphy_shades_controller
+      name: Shade 1 control
+      shade_channel: 1
+    - platform: somphy_shades_controller
+      name: Shade 2 control
+      shade_channel: 2
+    - platform: somphy_shades_controller
+      name: Shade 3 control
+      shade_channel: 3
+    - platform: somphy_shades_controller
+      name: Shade all control
+      shade_channel: 4
+    
