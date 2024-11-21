@@ -24,9 +24,6 @@ Somphy_Shades_Controller = somphy_shades_controller_ns.class_("Somphy_Shades_Con
 DEDICATED_COVER_SCHEMA = cover.COVER_SCHEMA.extend(
     {
         cv.GenerateID(): cv.declare_id(Somphy_Shades_Controller),
-        cv.Required(CONF_STOP_ACTION): automation.validate_automation(single=True),
-        cv.Required(CONF_OPEN_ACTION): automation.validate_automation(single=True),
-        cv.Required(CONF_CLOSE_ACTION): automation.validate_automation(single=True),
     }
 ).extend(cv.COMPONENT_SCHEMA)
 
