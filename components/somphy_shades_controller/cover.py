@@ -47,8 +47,9 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
 
-    for sensor_number, sensor_name in enumerate(config[CONF_SHADES]):
-        sensor_config = config[CONF_SHADES][sensor_name]
+    for shade_number, shade_name in enumerate(config[CONF_SHADES]):
+        shade_config = config[CONF_SHADES][shade_name]
+        print(shade_name)
         # cg.add(var.set_sensor_address(sensor_config["sender_address"], sensor_number))
         # sens = await sensor.new_sensor(sensor_config["temperature"])
         # cg.add(var.set_temperature_sensor(sens, sensor_number))

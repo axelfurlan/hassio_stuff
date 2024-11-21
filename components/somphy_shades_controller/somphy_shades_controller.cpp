@@ -27,9 +27,9 @@ namespace esphome
             led_all = false;
         }
 
-        CoverTraits Somphy_Shades_Controller::get_traits()
+        cover::CoverTraits Somphy_Shades_Controller::get_traits()
         {
-            auto traits = CoverTraits();
+            auto traits = cover::CoverTraits();
             traits.set_is_assumed_state(false);
             traits.set_supports_position(true);
             traits.set_supports_tilt(false);
@@ -37,7 +37,7 @@ namespace esphome
             return traits;
         }
 
-        void Somphy_Shades_Controller::control(const CoverCall &call)
+        void Somphy_Shades_Controller::control(const cover::CoverCall &call)
         {
             // This will be called every time the user requests a state change.
             if (call.get_position().has_value())

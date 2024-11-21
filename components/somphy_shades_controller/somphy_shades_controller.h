@@ -17,13 +17,13 @@ namespace esphome
 {
     namespace somphy_shades_controller
     {
-        class Somphy_Shades_Controller : public Component, public Cover
+        class Somphy_Shades_Controller : public Component, public cover::Cover
         {
         public:
             void setup() override;
             void dump_config() override;
-            CoverTraits get_traits() override;
-            void control(const CoverCall &call) override;
+            cover::CoverTraits get_traits() override;
+            void control(const cover::CoverCall &call) override;
 
         private:
             void simulatePushbuttonPress(uint8_t push_button);
