@@ -1,6 +1,6 @@
 #pragma once
 
-#include "esphome/components/sensor/sensor.h"
+#include "esphome/components/cover/cover.h"
 #include "esphome/core/component.h"
 #include "esphome/core/hal.h"
 #include <ADS1X15.h>
