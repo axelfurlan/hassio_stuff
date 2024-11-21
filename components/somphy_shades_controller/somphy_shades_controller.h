@@ -31,7 +31,7 @@ namespace esphome
             void control(const cover::CoverCall &call) override;
 
         private:
-            void simulatePushbuttonPress(uint8_t push_button);
+            void simulatePushbuttonPress(uint8_t push_button, bool do_wait = true);
             void initializePushButton(uint8_t push_button);
             void readChannelLEDs();
             int GetCurrentChannel();
@@ -44,6 +44,7 @@ namespace esphome
             bool led_3;
             bool led_all;
             int channel_;
+            static bool is_busy;
         };
     } // namespace somphy_shades_controller
 } // namespace esphome

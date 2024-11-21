@@ -57,11 +57,11 @@ namespace esphome
                 float pos = *call.get_position();
                 if(pos > 0.95)
                 {
-                    simulatePushbuttonPress(BUTTON_DOWN);
+                    simulatePushbuttonPress(BUTTON_UP);
                 }
                 if(pos < 0.05)
                 {
-                    simulatePushbuttonPress(BUTTON_UP);
+                    simulatePushbuttonPress(BUTTON_DOWN);
                 }
                 // Publish new state
                 this->position = pos;
@@ -77,12 +77,16 @@ namespace esphome
 
         void Somphy_Shades_Controller::dump_config() { ESP_LOGCONFIG(TAG, "Somphy_Shades_Controller"); }
 
-        void Somphy_Shades_Controller::simulatePushbuttonPress(uint8_t push_button)
+        void Somphy_Shades_Controller::simulatePushbuttonPress(uint8_t push_button, bool do_wait)
         {
             pinMode(push_button, OUTPUT);
             digitalWrite(push_button, LOW);
             delay(100);
             pinMode(push_button, INPUT);
+            if(do_wait)
+            {
+                delay(1000);
+            }
         }
 
         void Somphy_Shades_Controller::initializePushButton(uint8_t push_button)
@@ -149,7 +153,7 @@ namespace esphome
             int current_channel = GetCurrentChannel();
             if (current_channel < 0)
             {
-                simulatePushbuttonPress(BUTTON_CH);
+                simulatePushbuttonPress(BUTTON_CH, false);
                 delay(100);
             }
             current_channel = GetCurrentChannel();
@@ -163,19 +167,19 @@ namespace esphome
             { // press channel button channel_difference times
                 for (int i = 0; i < channel_difference; ++i)
                 {
-                    simulatePushbuttonPress(BUTTON_CH);
-                    delay(200);
+                    simulatePushbuttonPress(BUTTON_CH, false);
+                    delay(50);
                 }
             }
             else
             { // press channel button 5 + channel_difference times
                 for (int i = 0; i < 5 + channel_difference; ++i)
                 {
-                    simulatePushbuttonPress(BUTTON_CH);
-                    delay(200);
+                    simulatePushbuttonPress(BUTTON_CH, false);
+                    delay(50);
                 }
             }
-            delay(500);
+            delay(100);
             current_channel = GetCurrentChannel();
             channel_difference = desired_channel - current_channel;
             ESP_LOGCONFIG(TAG, "\t\tAfter  - Des: %d\tCur: %d\tDif: %d\n", desired_channel, current_channel, channel_difference);
