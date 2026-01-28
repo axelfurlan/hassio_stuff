@@ -24,6 +24,7 @@ public:
     void set_ce_pin(InternalGPIOPin *pin) { ce_pin_ = pin; }
     void set_temperature_sensor(sensor::Sensor *temperature_sensor, unsigned int sensor_number) { temperature_sensors_[sensor_number] = temperature_sensor; }
     void set_humidity_sensor(sensor::Sensor *humidity_sensor, unsigned int sensor_number) { humidity_sensors_[sensor_number] = humidity_sensor; }
+    void set_last_packet_sensor(sensor::Sensor *last_packet_sensor, unsigned int sensor_number) { last_packet_sensors_[sensor_number] = last_packet_sensor; }
     void set_sensor_address(char const *address, unsigned int sensor_number) { strcpy(TX_addresses[sensor_number].address, address); TX_addresses[sensor_number].is_set = true; }
     void set_channel(int channel) { channel_ = (uint8_t)channel; }
     
@@ -40,8 +41,9 @@ private:
     uint8_t pipe_;
     uint8_t channel_;
     NRF24_address TX_addresses[6];
-    sensor::Sensor *temperature_sensors_[6];
-    sensor::Sensor *humidity_sensors_[6];
+    sensor::Sensor *temperature_sensors_[6] = {nullptr};
+    sensor::Sensor *humidity_sensors_[6] = {nullptr};
+    sensor::Sensor *last_packet_sensors_[6] = {nullptr};
 };
 
 }  // namespace esp_nrf24l01_receiver

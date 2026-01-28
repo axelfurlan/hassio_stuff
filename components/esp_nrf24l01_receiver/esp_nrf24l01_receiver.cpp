@@ -1,6 +1,7 @@
 #include "esp_nrf24l01_receiver.h"
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"
+#include <ctime>
 
 namespace esphome {
 namespace esp_nrf24l01_receiver {
@@ -38,6 +39,10 @@ void ESP_NRF24L01_Receiver::loop() {
         }
         if (humidity_sensors_[pipe_] != nullptr) {
             humidity_sensors_[pipe_]->publish_state(NrfSensorData.humidity);
+        }
+        if (last_packet_sensors_[pipe_] != nullptr) {
+            time_t now = time(nullptr);
+            last_packet_sensors_[pipe_]->publish_state(now);
         }
         status_clear_warning();
     }

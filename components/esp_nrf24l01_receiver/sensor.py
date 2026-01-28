@@ -26,6 +26,7 @@ CONF_SENSOR5 = "sensor_5"
 CONF_CE_PIN = "ce_pin"
 CONF_CHANNEL = "channel"
 CONF_SENDER_ADDRESS = "sender_address"
+CONF_LAST_PACKET_TIMESTAMP = "last_packet_timestamp"
 
 esp_nrf24l01_receiver_ns = cg.esphome_ns.namespace("esp_nrf24l01_receiver")
 ESP_NRF24L01_Receiver = esp_nrf24l01_receiver_ns.class_("ESP_NRF24L01_Receiver", cg.Component)
@@ -43,6 +44,9 @@ NRF_SENSOR_SCHEMA = cv.Schema(
                     accuracy_decimals=2,
                     device_class=DEVICE_CLASS_HUMIDITY,
                     state_class=STATE_CLASS_MEASUREMENT,
+                ),
+                cv.Optional(CONF_LAST_PACKET_TIMESTAMP): sensor.sensor_schema(
+                device_class="timestamp"
                 ),
                 cv.Required(CONF_SENDER_ADDRESS): cv.string_strict,
             }
@@ -82,8 +86,17 @@ async def to_code(config):
 
     for sensor_number, sensor_name in enumerate(config[CONF_SENSORS]):
         sensor_config = config[CONF_SENSORS][sensor_name]
+
         cg.add(var.set_sensor_address(sensor_config["sender_address"], sensor_number))
-        sens = await sensor.new_sensor(sensor_config["temperature"])
-        cg.add(var.set_temperature_sensor(sens, sensor_number))
-        sens = await sensor.new_sensor(sensor_config["humidity"])
-        cg.add(var.set_humidity_sensor(sens, sensor_number))
+
+        if CONF_TEMPERATURE in sensor_config:
+            sens = await sensor.new_sensor(sensor_config[CONF_TEMPERATURE])
+            cg.add(var.set_temperature_sensor(sens, sensor_number))
+
+        if CONF_HUMIDITY in sensor_config:
+            sens = await sensor.new_sensor(sensor_config[CONF_HUMIDITY])
+            cg.add(var.set_humidity_sensor(sens, sensor_number))
+
+        if CONF_LAST_PACKET in sensor_config:
+            sens = await sensor.new_sensor(sensor_config[CONF_LAST_PACKET])
+            cg.add(var.set_last_packet_sensor(sens, sensor_number))
