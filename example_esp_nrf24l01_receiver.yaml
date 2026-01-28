@@ -1,10 +1,14 @@
 esphome:
-  name: downstairs-climate-receiver
-  platform: ESP8266
-  board: nodemcuv2
+  name: upstairs-climate-receiver
+  project:
+    name: "custom.nrf24_attiny_gateway"
+    version: "1.0"
   libraries:
     - SPI
     - nrf24/RF24@1.4.9
+
+esp8266:
+  board: nodemcuv2
 
 external_components:
   - source:
@@ -20,8 +24,8 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "MyClimateReceiver"
-    password: "CHOOSE_A_PASSWORD"
+    ssid: "UpstairsClimateReceiver"
+    password: "PaperoDonald!"
 
 captive_portal:
 
@@ -31,11 +35,11 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-    key: "ESPHOME_WILL_GENERATE_A_KEY"
+    key: "0j+AjlcjCAWQDTnR7MVQFCk+OYEQA39xRP/UQlcf2Ek="
 
 ota:
   - platform: esphome
-    password: "ESPHOME_WILL_GENERATE_A_PASSWORD"
+    password: "5c3a7a27f915e08241196e007a45e212"
 
 web_server:
   port: 80
@@ -43,59 +47,20 @@ web_server:
 time:
   - platform: homeassistant
 
+
 sensor:
   - platform: esp_nrf24l01_receiver
-    name: "Downstairs climate receiver"
+    name: "Upstairs climate receiver"
     cs_pin: D4
     ce_pin: D2
-    channel: 76
+    channel: 88
     sensors:
-        sensor_0:
+        sensor_0: # TEST
             temperature:
-                name: "Main bathroom temperature"
+                name: "Endurance test temperature"
             humidity:
-                name: "Main bathroom humidity"
+                name: "Endurance test humidity"
             last_packet_timestamp:
-                name: "Main bathroom last packet timestamp"
-            sender_address: "0STUD"
-        sensor_1:
-            temperature:
-                name: "Donwstairs corridor Temperature"
-            humidity:
-                name: "Donwstairs corridor Humidity"
-            last_packet_timestamp:
-                name: "Donwstairs corridor last packet timestamp"
+                name: "Endurance test last packet timestamp"
             sender_address: "1STUD"
-        sensor_2:
-            temperature:
-                name: "Studio Temperature READER TEST"
-            humidity:
-                name: "Studio Humidity READER TEST"
-            last_packet_timestamp:
-                name: "Studio last packet timestamp READER TEST"
-            sender_address: "2STUD"
-        sensor_3:
-            temperature:
-                name: "Kids bedroom Temperature"
-            humidity:
-                name: "Kids bedroom Humidity"
-            last_packet_timestamp:
-                name: "Kids bedroom last packet timestamp"
-            sender_address: "3STUD"
-        sensor_4:
-            temperature:
-                name: "Main bedroom temperature"
-            humidity:
-                name: "Main bedroom humidity"
-            last_packet_timestamp:
-                name: "Main bedroom last packet timestamp"
-            sender_address: "4STUD"
-        sensor_5:
-            temperature:
-                name: "Central heating temperature"
-            humidity:
-                name: "Central heating humidity"
-            last_packet_timestamp:
-                name: "Central heating last packet timestamp"
-            sender_address: "5STUD"
 
