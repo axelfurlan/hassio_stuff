@@ -40,6 +40,9 @@ ota:
 web_server:
   port: 80
 
+time:
+  - platform: homeassistant
+
 sensor:
   - platform: esp_nrf24l01_receiver
     name: "Downstairs climate receiver"
@@ -51,36 +54,48 @@ sensor:
             temperature:
                 name: "Main bathroom temperature"
             humidity:
-                name: "Main bathroom Humidity"
+                name: "Main bathroom humidity"
+            last_packet_timestamp:
+                name: "Main bathroom last packet timestamp"
             sender_address: "0STUD"
         sensor_1:
             temperature:
                 name: "Donwstairs corridor Temperature"
             humidity:
                 name: "Donwstairs corridor Humidity"
+            last_packet_timestamp:
+                name: "Donwstairs corridor last packet timestamp"
             sender_address: "1STUD"
         sensor_2:
             temperature:
                 name: "Studio Temperature READER TEST"
             humidity:
                 name: "Studio Humidity READER TEST"
+            last_packet_timestamp:
+                name: "Studio last packet timestamp READER TEST"
             sender_address: "2STUD"
         sensor_3:
             temperature:
                 name: "Kids bedroom Temperature"
             humidity:
                 name: "Kids bedroom Humidity"
+            last_packet_timestamp:
+                name: "Kids bedroom last packet timestamp"
             sender_address: "3STUD"
         sensor_4:
             temperature:
                 name: "Main bedroom temperature"
             humidity:
                 name: "Main bedroom humidity"
+            last_packet_timestamp:
+                name: "Main bedroom last packet timestamp"
             sender_address: "4STUD"
         sensor_5:
             temperature:
                 name: "Central heating temperature"
             humidity:
                 name: "Central heating humidity"
+            last_packet_timestamp:
+                name: "Central heating last packet timestamp"
             sender_address: "5STUD"
 
