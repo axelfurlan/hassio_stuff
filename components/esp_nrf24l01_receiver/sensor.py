@@ -97,6 +97,6 @@ async def to_code(config):
             sens = await sensor.new_sensor(sensor_config[CONF_HUMIDITY])
             cg.add(var.set_humidity_sensor(sens, sensor_number))
 
-        if CONF_LAST_PACKET in sensor_config:
-            sens = await sensor.new_sensor(sensor_config[CONF_LAST_PACKET])
+        if CONF_LAST_PACKET_TIMESTAMP in sensor_config:
+            sens = await sensor.new_sensor(sensor_config[CONF_LAST_PACKET_TIMESTAMP])
             cg.add(var.set_last_packet_sensor(sens, sensor_number))
