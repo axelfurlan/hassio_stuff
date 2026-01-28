@@ -46,7 +46,13 @@ NRF_SENSOR_SCHEMA = cv.Schema(
                     state_class=STATE_CLASS_MEASUREMENT,
                 ),
                 cv.Optional(CONF_LAST_PACKET_TIMESTAMP): sensor.sensor_schema(
-                device_class="timestamp"
+                    device_class="timestamp"
+                ).extend(
+                    {
+                        cv.Optional("attributes"): cv.Schema(
+                            {cv.string: cv.string}
+                        )
+                    }
                 ),
                 cv.Required(CONF_SENDER_ADDRESS): cv.string_strict,
             }
@@ -98,5 +104,12 @@ async def to_code(config):
             cg.add(var.set_humidity_sensor(sens, sensor_number))
 
         if CONF_LAST_PACKET_TIMESTAMP in sensor_config:
-            sens = await sensor.new_sensor(sensor_config[CONF_LAST_PACKET_TIMESTAMP])
+            last_packet_cfg = sensor_config[CONF_LAST_PACKET_TIMESTAMP]
+            sens = await sensor.new_sensor(last_packet_cfg)
+
+            if "attributes" in last_packet_cfg:
+                for k, v in last_packet_cfg["attributes"].items():
+                    cg.add(sens.add_attribute(k, v))
+
             cg.add(var.set_last_packet_sensor(sens, sensor_number))
+
